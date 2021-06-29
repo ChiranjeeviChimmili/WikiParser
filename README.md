@@ -2,4 +2,4 @@
 
 Created for interview task
 
-Major bug still need to be fixed.
+Few minor issues but works overall
