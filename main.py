@@ -18,18 +18,22 @@ wiki_wiki = wikipediaapi.Wikipedia('en', extract_format=wikipediaapi.ExtractForm
 link = wiki_wiki.page(page)
 response = requests.get(URL)
 
+number = 0
 def print_page(sections, level=0):
-        number = 1
-        for section in sections:       
-                text_no_sw_list = parsed_text(section)
-                common_words = find_common_words(text_no_sw_list)
-                souping = content_of_section(number)
-                
-                print("%s\n%s:\n%s\n" % ("" * (level + 1), section.title, common_words))
-                if common_words:
-                        print("\n", result(souping))
-                        number +=1
-                print_page(section.sections, level + 1)
+    global number
+    for section in sections:
+        number += 1
+
+        text_no_sw_list = parsed_text(section)
+        common_words = find_common_words(text_no_sw_list)
+        souping = content_of_section(number)
+
+        print("\n%s%s: \nMost Frequent Words: %s\n\n" % ("*" * (level + 1), section.title, common_words))
+        if common_words and result(souping):
+            print("Hyperlinks:", result(souping))
+        print_page(section.sections, level + 1)
+        print("\n")
+
 
 
 def find_common_words(text_list):        
@@ -40,12 +44,12 @@ def find_common_words(text_list):
 
 
 def parsed_text(text_input):
-        text = word_tokenize(text_input.text.lower())
-        new_text = [''.join(c for c in s if c not in string.punctuation) for s in text]
-        new_text = [s for s in new_text if s]
+    text = word_tokenize(text_input.text.lower())
+    new_text = [''.join(c for c in s if c not in string.punctuation) for s in text]
+    new_text = [s for s in new_text if s]
 
-        text_no_sw_list = [word for word in new_text if not word in stopwords.words()]
-        return text_no_sw_list
+    text_no_sw_list = [word for word in new_text if not word in stopwords.words()]
+    return text_no_sw_list
 
 PARAMS3 = {
 	"action": "query",
@@ -122,17 +126,17 @@ def links(dictionary):
                
 
 def content_of_section(i):
-        PARAMS2 = {
-        "action": "parse",
-        "pageid": get_pageid(data3),
-        "section": i,
-        "prop" : "text",
-        "format": "json"}  
-        P = S.get(url=dummyURL, params=PARAMS2)
-        DATA2 = P.json()
-        y = links(DATA2)
-        soup = BeautifulSoup(y, 'lxml')
-        return soup
+    PARAMS2 = {
+    "action": "parse",
+    "pageid": get_pageid(data3),
+    "section": i,
+    "prop" : "text",
+    "format": "json"}  
+    P = S.get(url=dummyURL, params=PARAMS2)
+    DATA2 = P.json()
+    y = links(DATA2)
+    soup = BeautifulSoup(y, 'lxml')
+    return soup
 
 
 print_page(link.sections)
