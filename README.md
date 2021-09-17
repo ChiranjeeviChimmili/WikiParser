@@ -1,4 +1,4 @@
-# WikiParser
+# WikiScraper
 
 Created for interview task with US Embassy London
 
