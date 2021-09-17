@@ -1,5 +1,6 @@
 # WikiParser
 
-Created for interview task
+Created for interview task with US Embassy London
 
-Few minor issues but works overall
+Issues
+- Cannot return hyperlinks from reference, see also, and external links sections
